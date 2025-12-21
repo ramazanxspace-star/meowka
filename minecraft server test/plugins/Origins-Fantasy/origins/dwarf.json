@@ -1,0 +1,17 @@
+{
+  "powers": [
+    "origins:strong_arms",
+    "fantasyorigins:infinite_haste",
+    "origins_neverland:tall_body", 
+    "origins-reborn:dwarf_sun_sensitivity",
+    "origins:water_vulnerability",
+    "origins:cat_vision"
+  ],
+  "icon": {
+    "item": "minecraft:iron_pickaxe"
+  },
+  "order": 1,
+  "impact": 2,
+  "name": "Дворф",
+  "description": "Практичные, коренастые и гордые мастера подземелий. Преуспевают в добыче полезных ископаемых, но с трудом переносят солнечный свет."
+}

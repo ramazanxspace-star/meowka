@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:ice_giant_body"
+  ],
+  "icon": {
+    "item": "minecraft:ice"
+  },
+  "order": 19,
+  "impact": 1,
+  "name": "Ледяной Великан",
+  "description": "Молодые йети с базовыми ледяными способностями."
+}
+
+

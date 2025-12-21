@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:forest_spirit_body"
+  ],
+  "icon": {
+    "item": "minecraft:oak_sapling"
+  },
+  "order": 3,
+  "impact": 2,
+  "name": "Лесной дух",
+  "description": "Древние духи леса с магическими способностями."
+}
+
+

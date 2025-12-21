@@ -1,0 +1,20 @@
+{
+  "powers": [
+    "monsterorigins:better_gold_armour",
+    "monsterorigins:better_gold_weapons", 
+    "origins:tailwind",
+    "moborigins:fortune_increaser",
+    "origins-reborn:goblin_gold_bonus",
+    "origins-reborn:goblin_treasure_hunter",
+    "origins-reborn:goblin_gold_affinity",
+    "fantasyorigins:large_body",
+    "origins:fragile"
+  ],
+  "icon": {
+    "item": "minecraft:gold_ingot"
+  },
+  "order": 3,
+  "impact": 2,
+  "name": "Гоблин",
+  "description": "Хитрые и жадные существа, помешанные на золоте. Обладают природным чутьём на сокровища, но довольно хрупки."
+}

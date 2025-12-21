@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:eldin_gar_body"
+  ],
+  "icon": {
+    "item": "minecraft:enchanted_book"
+  },
+  "order": 15,
+  "impact": 3,
+  "name": "Эльдингар",
+  "description": "Древние феи с невероятной магической силой."
+}
+
+

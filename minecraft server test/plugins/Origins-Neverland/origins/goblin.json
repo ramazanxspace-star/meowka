@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:goblin_body"
+  ],
+  "icon": {
+    "item": "minecraft:gold_ingot"
+  },
+  "order": 5,
+  "impact": 1,
+  "name": "Гоблин",
+  "description": "Маленькие существа, любящие золото."
+}
+
+

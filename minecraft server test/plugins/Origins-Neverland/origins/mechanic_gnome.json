@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:mechanic_gnome_body"
+  ],
+  "icon": {
+    "item": "minecraft:redstone"
+  },
+  "order": 12,
+  "impact": 2,
+  "name": "Гном Механик",
+  "description": "Гномы-механики с техническими знаниями."
+}
+
+

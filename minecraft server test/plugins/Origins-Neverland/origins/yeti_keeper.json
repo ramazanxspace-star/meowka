@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:yeti_keeper_body"
+  ],
+  "icon": {
+    "item": "minecraft:packed_ice"
+  },
+  "order": 20,
+  "impact": 3,
+  "name": "Хранитель Йети",
+  "description": "Древние хранители йети с невероятной силой."
+}
+
+

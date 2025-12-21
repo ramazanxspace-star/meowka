@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:bakeneko_body"
+  ],
+  "icon": {
+    "item": "minecraft:cat_spawn_egg"
+  },
+  "order": 16,
+  "impact": 1,
+  "name": "Бакэнеко",
+  "description": "Молодые коточеловеки с базовыми способностями."
+}
+
+

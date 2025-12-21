@@ -1,0 +1,4 @@
+name: Origins-Neverland
+version: '1.0-SNAPSHOT'
+main: mc.ramazan.originsNeverland.OriginsNeverland
+api-version: '1.21'

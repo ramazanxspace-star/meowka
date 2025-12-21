@@ -1,0 +1,18 @@
+{
+  "powers": [
+    "origins_neverland:ogre_axe_damage",
+    "origins_neverland:ogre_poison_immunity",
+    "origins_neverland:ogre_omnivore",
+    "origins_neverland:ogre_health",
+    "origins_neverland:ogre_body",
+    "origins_neverland:ogre_slowness",
+    "origins_neverland:ogre_hunger"
+  ],
+  "icon": {
+    "item": "minecraft:iron_axe"
+  },
+  "order": 10,
+  "impact": 3,
+  "name": "Огр",
+  "description": "Огромные и сильные существа с большим аппетитом."
+}

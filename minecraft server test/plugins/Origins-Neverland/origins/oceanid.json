@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:oceanid_body"
+  ],
+  "icon": {
+    "item": "minecraft:trident"
+  },
+  "order": 23,
+  "impact": 3,
+  "name": "Океанида",
+  "description": "Древние океаниды с невероятной силой."
+}
+
+

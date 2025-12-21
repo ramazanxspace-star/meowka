@@ -1,0 +1,12 @@
+{
+  "powers": [],
+  "icon": {
+    "item": "minecraft:player_head"
+  },
+  "order": 1,
+  "impact": 0,
+  "name": "Человек",
+  "description": "Умные и адаптивные существа с высоким интеллектом."
+}
+
+

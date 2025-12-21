@@ -1,0 +1,13 @@
+{
+	"powers": [
+		"origins_neverland:jump_damage",
+		"origins_neverland:tall_body"
+	],
+	"icon": {
+		"item": "minecraft:slime_ball"
+	},
+	"order": 1000,
+	"impact": 2,
+	"hidden": true,
+	"description": "A creature from Neverland that takes damage when jumping and is 1.5 blocks tall."
+}

@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:dark_dwarf_body"
+  ],
+  "icon": {
+    "item": "minecraft:coal"
+  },
+  "order": 6,
+  "impact": 2,
+  "name": "Тёмный карлик",
+  "description": "Тёмные карлики с магическими способностями."
+}
+
+

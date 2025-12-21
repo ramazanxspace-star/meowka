@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:cat_lord_body"
+  ],
+  "icon": {
+    "item": "minecraft:golden_apple"
+  },
+  "order": 17,
+  "impact": 2,
+  "name": "Лорд Котов",
+  "description": "Могущественные коточеловеки-лорды."
+}
+
+

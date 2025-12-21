@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:runed_dwarf_body"
+  ],
+  "icon": {
+    "item": "minecraft:book"
+  },
+  "order": 11,
+  "impact": 1,
+  "name": "Рунный Дворф",
+  "description": "Дворфы, изучающие древние руны."
+}
+
+

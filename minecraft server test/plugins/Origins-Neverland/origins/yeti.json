@@ -1,0 +1,17 @@
+{
+  "powers": [
+    "origins_neverland:yeti_health",
+    "origins_neverland:yeti_body",
+    "origins_neverland:yeti_slowness_immunity",
+    "origins_neverland:yeti_slowness",
+    "origins_neverland:yeti_fire_weakness",
+    "origins_neverland:yeti_frozen_aura"
+  ],
+  "icon": {
+    "item": "minecraft:snow_block"
+  },
+  "order": 9,
+  "impact": 2,
+  "name": "Йети",
+  "description": "Мощные ледяные великаны, обитающие в холодных горах."
+}

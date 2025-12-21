@@ -1,0 +1,17 @@
+{
+  "powers": [
+    "origins_neverland:incubus_fireball",
+    "origins_neverland:incubus_fire_resistance", 
+    "origins_neverland:incubus_meat_only",
+    "origins_neverland:incubus_water_weakness",
+    "origins_neverland:incubus_potion_weakness",
+    "origins_neverland:incubus_world_weakness"
+  ],
+  "icon": {
+    "item": "minecraft:fire_charge"
+  },
+  "order": 1,
+  "impact": 2,
+  "name": "Инкуб",
+  "description": "Демоническая раса из ада. Сильны в адских условиях, но слабы в обычном мире."
+}

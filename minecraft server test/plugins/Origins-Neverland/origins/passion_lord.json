@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:passion_lord_body"
+  ],
+  "icon": {
+    "item": "minecraft:blaze_powder"
+  },
+  "order": 8,
+  "impact": 2,
+  "name": "Повелитель страстей",
+  "description": "Могущественные демоны страсти."
+}
+
+

@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:forge_god_body"
+  ],
+  "icon": {
+    "item": "minecraft:anvil"
+  },
+  "order": 13,
+  "impact": 3,
+  "name": "Бог Кузни",
+  "description": "Боги кузнечного дела с невероятной силой."
+}
+
+

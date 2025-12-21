@@ -1,0 +1,18 @@
+{
+  "powers": [
+    "origins_neverland:siren_water_speed",
+    "origins_neverland:siren_water_regeneration",
+    "origins_neverland:siren_buoyancy",
+    "origins_neverland:siren_body",
+    "origins_neverland:siren_fire_weakness"
+  ],
+  "icon": {
+    "item": "minecraft:heart_of_the_sea"
+  },
+  "order": 11,
+  "impact": 2,
+  "name": "Сирена",
+  "description": "Мистические морские существа с чешуйчатыми хвостами."
+}
+
+

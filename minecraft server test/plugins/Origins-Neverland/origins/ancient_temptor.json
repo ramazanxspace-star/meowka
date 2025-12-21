@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:ancient_temptor_body"
+  ],
+  "icon": {
+    "item": "minecraft:nether_star"
+  },
+  "order": 9,
+  "impact": 3,
+  "name": "Древний Искуситель",
+  "description": "Древние демоны с невероятной силой."
+}
+
+

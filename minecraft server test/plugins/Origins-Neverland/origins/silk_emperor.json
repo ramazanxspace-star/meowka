@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:silk_emperor_body"
+  ],
+  "icon": {
+    "item": "minecraft:spider_eye"
+  },
+  "order": 10,
+  "impact": 2,
+  "name": "Шёлковый Император",
+  "description": "Могущественные пауки-императоры."
+}
+
+

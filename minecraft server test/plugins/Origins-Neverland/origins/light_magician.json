@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:light_magician_body"
+  ],
+  "icon": {
+    "item": "minecraft:glowstone"
+  },
+  "order": 14,
+  "impact": 1,
+  "name": "Светлая волшебница",
+  "description": "Молодые феи с базовыми магическими способностями."
+}
+
+

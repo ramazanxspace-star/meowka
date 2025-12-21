@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:sea_maiden_body"
+  ],
+  "icon": {
+    "item": "minecraft:kelp"
+  },
+  "order": 21,
+  "impact": 1,
+  "name": "Морская Дева",
+  "description": "Молодые сирены с базовыми водными способностями."
+}
+
+

@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:primordial_cat_body"
+  ],
+  "icon": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "order": 18,
+  "impact": 3,
+  "name": "Первородный кот",
+  "description": "Древние первородные коты с невероятной силой."
+}
+
+

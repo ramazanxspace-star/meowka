@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:sea_singer_body"
+  ],
+  "icon": {
+    "item": "minecraft:music_disc_blocks"
+  },
+  "order": 22,
+  "impact": 2,
+  "name": "Певица Морей",
+  "description": "Могущественные сирены-певицы."
+}
+
+

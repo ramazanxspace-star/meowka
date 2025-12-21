@@ -1,0 +1,14 @@
+{
+  "powers": [
+    "origins_neverland:elf_body"
+  ],
+  "icon": {
+    "item": "minecraft:oak_leaves"
+  },
+  "order": 2,
+  "impact": 1,
+  "name": "Эльф",
+  "description": "Длинные, вытянутые уши, средний рост."
+}
+
+
