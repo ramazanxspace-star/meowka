@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Starting Purpur Minecraft Server..."
+echo "Server will run on port 25565"
+echo "Press Ctrl+C to stop the server"
+echo ""
+/usr/lib/jvm/java-21-openjdk-amd64/bin/java -Xmx2G -Xms1G -jar purpur-1.21.10-2535.jar nogui
