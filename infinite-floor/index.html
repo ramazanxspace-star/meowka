@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Бесконечный белый пол</title>
+<link rel="icon" href="data:,">
+<style>
+  html, body {
+    margin: 0; height: 100%; overflow: hidden; background: #fff;
+    user-select: none; -webkit-user-select: none;
+  }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; touch-action: none; }
+  #hint {
+    position: fixed; left: 0; right: 0; bottom: 24px; margin: 0 auto;
+    box-sizing: border-box; width: fit-content; max-width: calc(100% - 32px);
+    padding: 8px 16px; border-radius: 16px; text-align: center;
+    font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #6b7280; background: rgba(255, 255, 255, .8);
+    pointer-events: none; transition: opacity .8s;
+  }
+</style>
+</head>
+<body>
+<canvas id="view"></canvas>
+<div id="hint"></div>
+<script>
+const canvas = document.getElementById('view');
+const hint = document.getElementById('hint');
+
+const EYE = 1.7, WALK = 4.3, RUN = 9;   // высота глаз в метрах, скорости в м/с
+const TURN = 1.8;                       // поворот стрелками, рад/с
+const TAN_HALF_FOV = Math.tan(35 * Math.PI / 180);
+const PERIOD = 10;                      // узор пола повторяется каждые 10 м
+const MAX_PITCH = Math.PI / 2 - 0.05;
+const BOB = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.035;
+
+const cam = { x: 5.5, z: 5.5, yaw: 0, pitch: -0.1 };
+let vx = 0, vz = 0, walked = 0;
+
+const keys = new Set();
+let look = null, stick = null;          // указатели: обзор и «стик» ходьбы на тачскрине
+
+addEventListener('keydown', (e) => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  keys.add(e.code);                     // code, а не key: не зависит от раскладки
+  if (e.code.startsWith('Arrow')) e.preventDefault();
+});
+addEventListener('keyup', (e) => keys.delete(e.code));
+addEventListener('blur', () => keys.clear());
+
+function turn(dx, dy) {
+  cam.yaw += dx;
+  cam.pitch = Math.max(-MAX_PITCH, Math.min(MAX_PITCH, cam.pitch - dy));
+}
+
+document.addEventListener('mousemove', (e) => {
+  if (document.pointerLockElement === canvas) turn(e.movementX * 0.0022, e.movementY * 0.0022);
+});
+
+canvas.addEventListener('pointerdown', (e) => {
+  const mouse = e.pointerType === 'mouse';
+  if (mouse) {
+    if (e.button !== 0 || document.pointerLockElement === canvas) return;
+    look = { id: e.pointerId, x: e.clientX, y: e.clientY };
+  } else if (!stick && e.clientX < innerWidth / 2) {
+    stick = { id: e.pointerId, x0: e.clientX, y0: e.clientY, x: 0, y: 0 };
+  } else if (!look) {
+    look = { id: e.pointerId, x: e.clientX, y: e.clientY };
+  } else {
+    return;
+  }
+  canvas.setPointerCapture(e.pointerId);
+  // Захват мыши — только после setPointerCapture: при запрошенном захвате тот бросает ошибку.
+  // Если захват недоступен (например, во фрейме), обзор работает перетаскиванием.
+  if (mouse) canvas.requestPointerLock?.()?.catch(() => {});
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (stick && e.pointerId === stick.id) {
+    stick.x = Math.max(-1, Math.min(1, (e.clientX - stick.x0) / 60));
+    stick.y = Math.max(-1, Math.min(1, (e.clientY - stick.y0) / 60));
+  } else if (look && e.pointerId === look.id && document.pointerLockElement !== canvas) {
+    const k = e.pointerType === 'mouse' ? 0.0022 : 0.005;
+    turn((e.clientX - look.x) * k, (e.clientY - look.y) * k);
+    look.x = e.clientX;
+    look.y = e.clientY;
+  }
+});
+
+function release(e) {
+  if (stick && e.pointerId === stick.id) stick = null;
+  if (look && e.pointerId === look.id) look = null;
+}
+canvas.addEventListener('pointerup', release);
+canvas.addEventListener('pointercancel', release);
+
+const VERT = 'attribute vec2 aPos; void main() { gl_Position = vec4(aPos, 0.0, 1.0); }';
+
+// Пол — не геометрия: каждый пиксель пускает луч в плоскость y = 0, поэтому края у него нет.
+const FRAG = `
+precision highp float;
+uniform vec2 uRes;
+uniform vec3 uCam;      // xz — позиция внутри одного периода сетки, y — высота глаз
+uniform vec3 uFwd, uRight, uUp;
+uniform float uTan;
+
+// Сглаженные линии сетки: w — размер пикселя в клетках, lw — толщина линии.
+float grid(vec2 uv, vec2 w, float lw) {
+  vec2 draw = min(max(vec2(lw), w), vec2(0.5));
+  vec2 aa = w * 1.5;
+  vec2 g = 1.0 - abs(fract(uv) * 2.0 - 1.0);
+  vec2 l = (1.0 - smoothstep(draw - aa, draw + aa, g)) * clamp(lw / draw, 0.0, 1.0);
+  l = mix(l, vec2(lw), clamp(w * 2.0 - 1.0, 0.0, 1.0));
+  return mix(l.x, 1.0, l.y);
+}
+
+void main() {
+  float m = min(uRes.x, uRes.y);
+  vec2 p = (gl_FragCoord.xy * 2.0 - uRes) / m * uTan;
+  vec3 d = uFwd + p.x * uRight + p.y * uUp;
+  vec3 col = mix(vec3(1.0), vec3(0.90, 0.93, 0.97), smoothstep(0.0, 1.0, max(d.y, 0.0) / length(d)));
+  if (d.y < -1e-4) {
+    float t = uCam.y / -d.y;
+    vec2 hit = d.xz * t;
+    float px = 2.0 * uTan / m;
+    vec2 dx = t * px * uRight.xz;
+    vec2 dy = t * px * (uUp.xz + d.xz * (uUp.y / -d.y));
+    vec2 w = vec2(length(vec2(dx.x, dy.x)), length(vec2(dx.y, dy.y)));
+    vec2 uv = hit + uCam.xz;
+    vec3 c = vec3(0.975, 0.978, 0.985);
+    c = mix(c, vec3(0.82, 0.835, 0.86), grid(uv, w, 0.02));
+    c = mix(c, vec3(0.70, 0.72, 0.76), grid(uv * 0.1, w * 0.1, 0.0035));
+    col = mix(vec3(1.0), c, exp(-dot(hit, hit) / (160.0 * 160.0)));
+  }
+  // Лёгкий шум убирает полосы на плавных светлых градиентах.
+  col += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+const gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false });
+const uniform = {};
+
+function setup() {
+  const prog = gl.createProgram();
+  for (const [type, src] of [[gl.VERTEX_SHADER, VERT], [gl.FRAGMENT_SHADER, FRAG]]) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, src);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader));
+    gl.attachShader(prog, shader);
+  }
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  gl.useProgram(prog);
+
+  // Один треугольник, накрывающий весь экран.
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, 'aPos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  gl.uniform1f(gl.getUniformLocation(prog, 'uTan'), TAN_HALF_FOV);
+  for (const name of ['uRes', 'uCam', 'uFwd', 'uRight', 'uUp']) {
+    uniform[name] = gl.getUniformLocation(prog, name);
+  }
+}
+
+const wrap = (v) => ((v % PERIOD) + PERIOD) % PERIOD;
+const held = (...codes) => (codes.some((c) => keys.has(c)) ? 1 : 0);
+let last = 0, drawn = '';
+
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min((now - last) / 1000, 0.1);
+  last = now;
+
+  let mx = held('KeyD') - held('KeyA') + (stick ? stick.x : 0);
+  let mz = held('KeyW', 'ArrowUp') - held('KeyS', 'ArrowDown') - (stick ? stick.y : 0);
+  const len = Math.hypot(mx, mz);
+  if (len > 1) { mx /= len; mz /= len; }
+  if (len > 0) hint.style.opacity = 0;
+  cam.yaw += (held('ArrowRight') - held('ArrowLeft')) * TURN * dt;
+
+  const speed = held('ShiftLeft', 'ShiftRight') ? RUN : WALK;
+  const sy = Math.sin(cam.yaw), cy = Math.cos(cam.yaw);
+  const ease = 1 - Math.exp(-12 * dt);
+  vx += ((sy * mz + cy * mx) * speed - vx) * ease;
+  vz += ((sy * mx - cy * mz) * speed - vz) * ease;
+  let v = Math.hypot(vx, vz);
+  if (!len && v < 1e-3) vx = vz = v = 0;
+  cam.x += vx * dt;
+  cam.z += vz * dt;
+  walked += v * dt;
+  const eye = EYE + Math.sin(walked * 2.9) * BOB * Math.min(v / WALK, 1);
+
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
+  // Пока ничего не меняется, кадр не перерисовывается.
+  const state = [w, h, cam.x, cam.z, cam.yaw, cam.pitch, eye].join();
+  if (state === drawn || !w || !h) return;
+  drawn = state;
+  if (canvas.width !== w || canvas.height !== h) {
+    canvas.width = w;
+    canvas.height = h;
+    gl.viewport(0, 0, w, h);
+  }
+
+  const sp = Math.sin(cam.pitch), cp = Math.cos(cam.pitch);
+  gl.uniform2f(uniform.uRes, w, h);
+  gl.uniform3f(uniform.uCam, wrap(cam.x), eye, wrap(cam.z));
+  gl.uniform3f(uniform.uFwd, sy * cp, sp, -cy * cp);
+  gl.uniform3f(uniform.uRight, cy, 0, sy);
+  gl.uniform3f(uniform.uUp, -sy * sp, cp, cy * sp);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
+hint.textContent = matchMedia('(pointer: coarse)').matches
+  ? 'Левая половина экрана — ходить, правая — осматриваться'
+  : 'WASD или стрелки — ходить · клик и мышь — осматриваться · Shift — бег';
+
+try {
+  setup();
+  requestAnimationFrame(frame);
+} catch (err) {
+  console.error(err);
+  hint.textContent = 'Не удалось запустить WebGL в этом браузере';
+}
+</script>
+</body>
+</html>
